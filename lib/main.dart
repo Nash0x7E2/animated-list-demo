@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import "package:flutter/src/widgets/framework.dart";
 void main() {
   runApp(
     MaterialApp(
@@ -59,21 +59,38 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
             "https://pbs.twimg.com/profile_images/970033173013958656/Oz3SLVat_400x400.jpg",
       ),
     );
-    _listKey.currentState.insertItem(index, duration: Duration(milliseconds: 500));
+    _listKey.currentState
+        .insertItem(index, duration: Duration(milliseconds: 500));
   }
 
   void deleteUser(int index) {
-    listData.removeAt(index);
+    var user =  listData.removeAt(index);
     _listKey.currentState.removeItem(
       index,
       (BuildContext context, Animation<double> animation) {
-        return SizeTransition(
-          sizeFactor: animation,
-          axisAlignment: 1.0,
-          child: ListTile(),
+        return FadeTransition(
+          opacity:
+              CurvedAnimation(parent: animation, curve: Interval(0.5, 1.0)),
+          child: SizeTransition(
+            sizeFactor:
+                CurvedAnimation(parent: animation, curve: Interval(0.0, 1.0)),
+            axisAlignment: 0.0,
+            child: _buildItem(user),
+          ),
         );
       },
-      duration: Duration(milliseconds: 400),
+      duration: Duration(milliseconds: 600),
+    );
+  }
+
+  Widget _buildItem( UserModel user, [int deleteIndex]) {
+    return ListTile(
+      title: Text(user.firstName),
+      subtitle: Text(user.lastName),
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(user.profileImageUrl),
+      ),
+      onLongPress: deleteIndex != null ?  () => deleteUser(deleteIndex) : null,
     );
   }
 
@@ -95,15 +112,7 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
           itemBuilder: (BuildContext context, int index, Animation animation) {
             return FadeTransition(
               opacity: animation,
-              child: ListTile(
-                title: Text(listData[index].firstName),
-                subtitle: Text(listData[index].lastName),
-                leading: CircleAvatar(
-                  backgroundImage:
-                      NetworkImage(listData[index].profileImageUrl),
-                ),
-                onLongPress: () => deleteUser(index),
-              ),
+              child: _buildItem(listData[index], index ),
             );
           },
         ),
