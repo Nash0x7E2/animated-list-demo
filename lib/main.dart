@@ -83,14 +83,15 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
     );
   }
 
-  Widget _buildItem( UserModel user, [int deleteIndex]) {
+  Widget _buildItem( UserModel user, [int index]) {
     return ListTile(
+      key: ValueKey<int>(index),
       title: Text(user.firstName),
       subtitle: Text(user.lastName),
       leading: CircleAvatar(
         backgroundImage: NetworkImage(user.profileImageUrl),
       ),
-      onLongPress: deleteIndex != null ?  () => deleteUser(deleteIndex) : null,
+      onLongPress: index != null ?  () => deleteUser(index) : null,
     );
   }
 
