@@ -13,6 +13,19 @@ class UserModel {
   String firstName;
   String lastName;
   String profileImageUrl;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserModel &&
+          runtimeType == other.runtimeType &&
+          firstName == other.firstName &&
+          lastName == other.lastName &&
+          profileImageUrl == other.profileImageUrl;
+
+  @override
+  int get hashCode =>
+      firstName.hashCode ^ lastName.hashCode ^ profileImageUrl.hashCode;
 }
 
 List<UserModel> listData = [
@@ -91,7 +104,7 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
 
   Widget _buildItem(UserModel user, [int index]) {
     return ListTile(
-      key: ValueKey<int>(index),
+      key: ValueKey<UserModel>(user),
       title: Text(user.firstName),
       subtitle: Text(user.lastName),
       leading: CircleAvatar(
