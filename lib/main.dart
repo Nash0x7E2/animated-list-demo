@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import "package:flutter/src/widgets/framework.dart";
+
 void main() {
   runApp(
     MaterialApp(
@@ -40,6 +40,12 @@ List<UserModel> listData = [
     profileImageUrl:
         "https://pbs.twimg.com/profile_images/1000361976361611264/Ty8LbTKx_400x400.jpg",
   ),
+  UserModel(
+    firstName: "Mariano",
+    lastName: "Zorrilla",
+    profileImageUrl:
+        "https://ca.slack-edge.com/TADUGCD9D-UC5F6HJ6T-gfbe5883d03f-1024",
+  ),
 ];
 
 class AnimatedListDemo extends StatefulWidget {
@@ -64,7 +70,7 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
   }
 
   void deleteUser(int index) {
-    var user =  listData.removeAt(index);
+    var user = listData.removeAt(index);
     _listKey.currentState.removeItem(
       index,
       (BuildContext context, Animation<double> animation) {
@@ -83,7 +89,7 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
     );
   }
 
-  Widget _buildItem( UserModel user, [int index]) {
+  Widget _buildItem(UserModel user, [int index]) {
     return ListTile(
       key: ValueKey<int>(index),
       title: Text(user.firstName),
@@ -91,7 +97,7 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
       leading: CircleAvatar(
         backgroundImage: NetworkImage(user.profileImageUrl),
       ),
-      onLongPress: index != null ?  () => deleteUser(index) : null,
+      onLongPress: index != null ? () => deleteUser(index) : null,
     );
   }
 
@@ -113,7 +119,7 @@ class _AnimatedListDemoState extends State<AnimatedListDemo> {
           itemBuilder: (BuildContext context, int index, Animation animation) {
             return FadeTransition(
               opacity: animation,
-              child: _buildItem(listData[index], index ),
+              child: _buildItem(listData[index], index),
             );
           },
         ),
